@@ -32,13 +32,11 @@ public:
     int read_count;
 
     Book() = delete;
-    constexpr Book(std::string s) {
-        genre = GenreFromString(s);
-    }
+    Book(std::string t, std::string_view a, Genre g = Genre::Unknown, int y = 0, double r = 0.0, int rc = 0)
+        : title(std::move(t)), author(a), genre(g), year(y), rating(r), read_count(rc) {}
 
-    constexpr Book(Genre g) {
-        genre = g;
-    }
+    Book(std::string t, std::string_view a, std::string g)
+        : title(std::move(t)), author(a), genre(GenreFromString(g)), year(0), rating(0.0), read_count(0) {}
 };
 }  // namespace bookdb
 
@@ -74,9 +72,10 @@ template <>
 struct formatter<bookdb::Book> {
     template <typename FormatContext>
     auto format(const bookdb::Book b, FormatContext &fc) const {
-        std::string book_str;
+        format_to(fc.out(), "Title = {}, Author = {}, Genre = {}, Year = {}, Rating = {}, ReadCount = {}"
+        , b.title, b.author, b.genre, b.year, b.rating, b.read_count);
 
-        return format_to(fc.out(), "{}", book_str);
+        return fc.out();
     }
 
     constexpr auto parse(format_parse_context &ctx) {
