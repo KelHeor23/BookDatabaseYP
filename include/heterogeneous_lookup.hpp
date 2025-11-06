@@ -8,58 +8,39 @@ namespace bookdb {
 struct TransparentStringLess {
     using is_transparent = void;
 
-    bool operator()(std::string_view lhs, std::string_view rhs) const noexcept {
-        return lhs < rhs;
-    }
+    static std::string_view to_sv(std::string_view v) noexcept { return v; }
+    static std::string_view to_sv(const std::string& s) noexcept { return s; }
+    static std::string_view to_sv(const char* s) noexcept { return s; }
 
-    bool operator()(const std::string& lhs, std::string_view rhs) const noexcept {
-        return std::string_view(lhs) < rhs;
-    }
-    bool operator()(std::string_view lhs, const std::string& rhs) const noexcept {
-        return lhs < std::string_view(rhs);
-    }
-    bool operator()(const char* lhs, std::string_view rhs) const noexcept {
-        return std::string_view(lhs) < rhs;
-    }
-    bool operator()(std::string_view lhs, const char* rhs) const noexcept {
-        return lhs < std::string_view(rhs);
+    template <class L, class R>
+    bool operator()(const L& lhs, const R& rhs) const noexcept {
+        return to_sv(lhs) < to_sv(rhs);
     }
 };
 
 struct TransparentStringEqual {
     using is_transparent = void;
 
-    bool operator()(std::string_view lhs, std::string_view rhs) const noexcept {
-        return lhs == rhs;
-    }
+    static std::string_view to_sv(std::string_view v) noexcept { return v; }
+    static std::string_view to_sv(const std::string& s) noexcept { return s; }
+    static std::string_view to_sv(const char* s) noexcept { return s; }
 
-    bool operator()(const std::string& lhs, std::string_view rhs) const noexcept {
-        return std::string_view(lhs) == rhs;
-    }
-    bool operator()(std::string_view lhs, const std::string& rhs) const noexcept {
-        return lhs == std::string_view(rhs);
-    }
-    bool operator()(const char* lhs, std::string_view rhs) const noexcept {
-        return std::string_view(lhs) == rhs;
-    }
-    bool operator()(std::string_view lhs, const char* rhs) const noexcept {
-        return lhs == std::string_view(rhs);
+    template <class L, class R>
+    bool operator()(const L& lhs, const R& rhs) const noexcept {
+        return to_sv(lhs) == to_sv(rhs);
     }
 };
 
 struct TransparentStringHash {
     using is_transparent = void;
 
-    std::size_t operator()(std::string_view s) const noexcept {
-        return std::hash<std::string_view>{}(s);
-    }
+    static std::string_view to_sv(std::string_view v) noexcept { return v; }
+    static std::string_view to_sv(const std::string& s) noexcept { return s; }
+    static std::string_view to_sv(const char* s) noexcept { return s; }
 
-    std::size_t operator()(const std::string& s) const noexcept {
-        return (*this)(std::string_view(s));
-    }
-
-    std::size_t operator()(const char* s) const noexcept {
-        return (*this)(std::string_view(s));
+    template <class T>
+    std::size_t operator()(const T& v) const noexcept {
+        return std::hash<std::string_view>{}(to_sv(v));
     }
 };
 
