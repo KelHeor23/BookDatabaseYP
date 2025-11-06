@@ -33,10 +33,10 @@ public:
 
     Book() = delete;
     Book(std::string t, std::string_view a, Genre g = Genre::Unknown, int y = 0, double r = 0.0, int rc = 0)
-        : title(std::move(t)), author(a), genre(g), year(y), rating(r), read_count(rc) {}
+        : author(a), title(std::move(t)), year(y), genre(g), rating(r), read_count(rc) {}
 
     Book(std::string t, std::string_view a, std::string g)
-        : title(std::move(t)), author(a), genre(GenreFromString(g)), year(0), rating(0.0), read_count(0) {}
+        : author(a), title(std::move(t)), year(0), genre(GenreFromString(g)), rating(0.0), read_count(0) {}
 };
 }  // namespace bookdb
 
