@@ -1,3 +1,6 @@
+#include "book.hpp"
+#include "book_database.hpp"
+
 #include <gtest/gtest.h>
 #include "book_database.hpp"
 

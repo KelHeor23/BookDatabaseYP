@@ -59,16 +59,15 @@ public:
 
     template <typename... Args>
     Book& EmplaceBack(Args&&... args) {
-        books_.emplace_back(std::forward<Args>(args)...);
-        Book& book = books_.back();
+    Book& b = books_.emplace_back(std::forward<Args>(args)...);
 
-        if (!book.author.empty()) {
-            auto [it, inserted] = authors_.emplace(book.author);
-            book.author = *it;
-        }
-        
-        return book;
+    if (!b.author.empty()) {
+        auto [it, inserted] = authors_.emplace(b.author);
+        b.author = *it;
     }
+
+    return b;
+}
 
 private:
     BookContainer books_;
