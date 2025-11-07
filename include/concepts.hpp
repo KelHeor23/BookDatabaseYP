@@ -8,18 +8,25 @@
 namespace bookdb {
 
 template <typename T>
-concept BookContainerLike = true;
+concept BookContainerLike = 
+    std::ranges::range<T> &&
+    std::convertible_to<std::ranges::range_reference_t<T>, const Book&>;;
 
 template <typename T>
-concept BookIterator = true;
+concept BookIterator = 
+    std::input_iterator<T> &&
+    std::convertible_to<std::iter_reference_t<T>, const Book&>;
 
 template <typename S, typename I>
-concept BookSentinel = true;
+concept BookSentinel = 
+    std::sentinel_for<S, I>;
 
 template <typename P>
-concept BookPredicate = true;
+concept BookPredicate = 
+    std::predicate<P, const Book&>;
 
 template <typename C>
-concept BookComparator = true;
+concept BookComparator =
+    std::strict_weak_order<C, const Book&, const Book&>;
 
 }  // namespace bookdb
