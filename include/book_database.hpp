@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include <flat_set>
+#include <set>
 
 #include "book.hpp"
 #include "concepts.hpp"
@@ -15,7 +15,8 @@ namespace bookdb {
 template <BookContainerLike BookContainer = std::vector<Book>>
 class BookDatabase {
 public:
-    using AuthorContainer   = std::flat_set<std::string, TransparentStringLess>;
+    // Хотел использовать flat_set, но он плохо работает с string_view
+    using AuthorContainer   = std::set<std::string, TransparentStringLess>;
     using book_iterator     = typename BookContainer::iterator;
     using author_iterator   = typename AuthorContainer::iterator;
     using size_type         = typename BookContainer::size_type;
@@ -40,6 +41,10 @@ public:
 
     size_type size() const noexcept { return books_.size(); }
     bool empty() const noexcept { return books_.empty(); }
+
+    BookContainer& GetBooks() noexcept {
+        return books_;
+    }
 
     const BookContainer& GetBooks() const noexcept {
         return books_;

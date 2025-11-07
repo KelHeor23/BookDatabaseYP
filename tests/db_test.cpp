@@ -6,23 +6,8 @@
 
 TEST(BookDatabaseTest, BookDatabasePushBack) {
     bookdb::BookDatabase<> db;
-    bookdb::Book b1{
-        "Dune",
-        "Frank Herbert",
-        bookdb::Genre::SciFi,
-        1965,
-        5.0,
-        10
-    };
-
-    bookdb::Book b2{
-        "Dune Messiah",
-        "Frank Herbert",
-        bookdb::Genre::SciFi,
-        1969,
-        4.7,
-        5
-    };
+    bookdb::Book b1{"1984", "George Orwell", 1949, bookdb::Genre::SciFi, 4., 190};
+    bookdb::Book b2{"Animal Farm", "George Orwell", 1945, bookdb::Genre::Fiction, 4.4, 143};
 
     db.PushBack(b1);
     db.PushBack(b2);
@@ -36,23 +21,8 @@ TEST(BookDatabaseTest, BookDatabasePushBack) {
 }
 
 TEST(BookDatabaseTest, BookDatabaseInitList) {
-    bookdb::Book b1{
-        "Dune",
-        "Frank Herbert",
-        bookdb::Genre::SciFi,
-        1965,
-        5.0,
-        10
-    };
-
-    bookdb::Book b2{
-        "Dune Messiah",
-        "Frank Herbert",
-        bookdb::Genre::SciFi,
-        1969,
-        4.7,
-        5
-    };
+    bookdb::Book b1{"1984", "George Orwell", 1949, bookdb::Genre::SciFi, 4., 190};
+    bookdb::Book b2{"Animal Farm", "George Orwell", 1945, bookdb::Genre::Fiction, 4.4, 143};
 
     bookdb::BookDatabase<> db{ b1, b2 };
 
@@ -67,14 +37,7 @@ TEST(BookDatabaseTest, BookDatabaseInitList) {
 TEST(BookDatabaseTest, BookDatabaseEmplaceBack) {
     bookdb::BookDatabase<> db;
 
-    auto& b = db.EmplaceBack(
-        "Dune",
-        "Frank Herbert",
-        bookdb::Genre::SciFi,
-        1965,
-        5.0,
-        10
-    );
+    auto& b = db.EmplaceBack("1984", "George Orwell", 1949, bookdb::Genre::SciFi, 4., 190);
 
     EXPECT_EQ(db.size(), 1u);
     EXPECT_EQ(db.GetAuthors().size(), 1u);

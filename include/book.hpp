@@ -32,7 +32,7 @@ public:
     int read_count;
 
     Book() = delete;
-    Book(std::string t, std::string_view a, Genre g = Genre::Unknown, int y = 0, double r = 0.0, int rc = 0)
+    Book(std::string t, std::string_view a, int y = 0, Genre g = Genre::Unknown, double r = 0.0, int rc = 0)
         : author(a), title(std::move(t)), year(y), genre(g), rating(r), read_count(rc) {}
 
     Book(std::string t, std::string_view a, std::string g)

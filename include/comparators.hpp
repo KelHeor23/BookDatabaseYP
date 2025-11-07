@@ -40,7 +40,7 @@ struct MoreByRating {
     }
 };
 
-struct LessByReadCount {
+struct LessByPopularity {
     bool operator()(const Book &a, const Book &b) const {
         return a.read_count < b.read_count;
     }
