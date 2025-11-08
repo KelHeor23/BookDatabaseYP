@@ -37,19 +37,25 @@ auto calculateGenreRatings(const BookDatabase<T> &cont) {
     std::string out = "";
     if (cont.GetBooks().empty()) return out;
     constexpr auto genre_count = std::to_underlying(Genre::Unknown) + 1;
+    
+    const auto& books = cont.GetBooks();
+    for (std::size_t i = 0; i < genre_count; ++i) {
+        const auto g = static_cast<Genre>(i);
 
-    std::array<double, genre_count> sum{};
-    std::array<std::size_t, genre_count> cnt{};
-    
-    for (const auto& b : cont.GetBooks()) {
-        auto i = std::to_underlying(b.genre);
-        sum[i] += b.rating;
-        ++cnt[i];
+        std::vector<Book> subset;
+        subset.reserve(books.size() / genre_count + 1);
+        std::copy_if(books.begin(), books.end(),
+                     std::back_inserter(subset),
+                     [g](const Book& b) { return b.genre == g; });
+
+        if (!subset.empty()) {
+            const double sum = std::accumulate(
+                subset.begin(), subset.end(), 0.0,
+                [](double acc, const Book& b) { return acc + b.rating; }
+            );
+            res.emplace(g, sum / subset.size());
+        }
     }
-    
-    for (std::size_t i = 0; i < genre_count; ++i)
-        if (cnt[i])
-            res.emplace(static_cast<Genre>(i), sum[i] / cnt[i]);
 
     for (const auto& [genre, raiting] : res)
         out += std::format("{}: {}\n", genre, raiting);
