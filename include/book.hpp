@@ -8,30 +8,25 @@ namespace bookdb {
 
 enum class Genre { Fiction, NonFiction, SciFi, Biography, Mystery, Unknown };
 
-constexpr Genre GenreFromString(std::string_view s) {
-    
-    return  s == "Fiction"      ? Genre::Fiction :
-            s == "NonFiction"   ? Genre::NonFiction :
-            s == "SciFi"        ? Genre::SciFi :
-            s == "Biography"    ? Genre::Biography :
-            s == "Mystery"      ? Genre::Mystery :
-                                  Genre::Unknown;
+namespace detail {
+constexpr std::array<std::string_view, 6> kGenreNames{
+    "Fiction", "NonFiction", "SciFi", "Biography", "Mystery", "Unknown"
+};
 }
 
-constexpr std::string GenreToString(Genre g) {
-    std::string genre_str;
+constexpr Genre GenreFromString(std::string_view s) {
+    const auto it = std::find(detail::kGenreNames.begin(),
+                              detail::kGenreNames.end(), s);
+    return it == detail::kGenreNames.end()
+           ? Genre::Unknown
+           : static_cast<Genre>(std::distance(detail::kGenreNames.begin(), it));
+}
 
-    switch (g) {
-        case Genre::Fiction:    genre_str = "Fiction"; break;
-        case Genre::Mystery:    genre_str = "Mystery"; break;
-        case Genre::NonFiction: genre_str = "NonFiction"; break;
-        case Genre::SciFi:      genre_str = "SciFi"; break;
-        case Genre::Biography:  genre_str = "Biography"; break;
-        case Genre::Unknown:    genre_str = "Unknown"; break;
-        default:
-            genre_str = "Unknown";
-    }
-    return genre_str;
+constexpr std::string_view GenreToString(Genre g) {
+    const auto idx = static_cast<std::size_t>(g);
+    return idx < detail::kGenreNames.size()
+           ? detail::kGenreNames[idx]
+           : detail::kGenreNames.back();
 }
 
 struct Book {
