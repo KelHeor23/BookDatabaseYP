@@ -41,11 +41,11 @@ public:
     int read_count;
 
     Book() = delete;
-    Book(std::string t, std::string_view a, int y = 0, Genre g = Genre::Unknown, double r = 0.0, int rc = 0)
-        : author(a), title(std::move(t)), year(y), genre(g), rating(r), read_count(rc) {}
+    Book(std::string title_, std::string_view author_, int year_ = 0, Genre genre_ = Genre::Unknown, double raiting_ = 0.0, int read_count_ = 0)
+        : author(author_), title(std::move(title_)), year(year_), genre(genre_), rating(raiting_), read_count(read_count_) {}
 
-    Book(std::string t, std::string_view a, std::string g)
-        : author(a), title(std::move(t)), year(0), genre(GenreFromString(g)), rating(0.0), read_count(0) {}
+    Book(std::string title_, std::string_view author_, std::string genre_)
+        : author(author_), title(std::move(title_)), year(0), genre(GenreFromString(genre_)), rating(0.0), read_count(0) {}
 };
 }  // namespace bookdb
 
