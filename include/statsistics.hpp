@@ -90,7 +90,7 @@ resultBookVec sampleRandomBooks(const BookDatabase<T> &cont, std::size_t count) 
     return result;
 }
 
-template <BookContainerLike T, typename Comp>
+template <BookContainerLike T, BookComparator Comp>
 resultBookVec getTopNBy(BookDatabase<T> &cont, std::size_t count, Comp comp) {
     resultBookVec result;
     auto& books = cont.GetBooks();

@@ -26,21 +26,21 @@ inline auto GenreIs(Genre g) {
     };
 }
 
-template <typename... Preds>
+template <BookPredicate... Preds>
 inline auto all_of(Preds... preds) {
     return [=](const Book& b) {
         return (preds(b) && ...);
     };
 }
 
-template <typename... Preds>
+template <BookPredicate... Preds>
 inline auto any_of(Preds... preds) {
     return [=](const Book& b) {
         return (preds(b) || ...);
     };
 }
 
-template <typename It, typename Pred>
+template <typename It, BookPredicate Pred>
 inline std::vector<std::reference_wrapper<const Book>>
 filterBooks(It first, It last, Pred pred) {
     std::vector<std::reference_wrapper<const Book>> out;
